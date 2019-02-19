@@ -1,0 +1,33 @@
+---
+
+# tasks file for Version-check
+
+- name: Check Python version
+  shell: python --version
+  register: check_python
+
+- name: Check docker  version
+  shell: docker --version
+  register: check_docker
+
+- name: Check ansible  version
+  shell: ansible --version
+  register: check_ansible
+
+
+- debug:
+    msg: "Python Version is same as expected"
+  when:
+      - check_python.stderr_lines[0]=="{{python_version}}"
+
+- debug:
+    msg: "docker Version is same as expected"
+  when:
+      - check_docker.stdout=="{{docker_version}}"
+
+- debug:
+    msg: "ansible version is same as expeced"
+  when:
+     - check_ansible.stdout.split('\n')[0].strip()=="{{ansible}}"
+
+
