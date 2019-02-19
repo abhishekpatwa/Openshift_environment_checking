@@ -1,0 +1,16 @@
+---
+# tasks file for port-checking
+
+- name: Check all port numbers are accessible from current host
+  wait_for:
+    host: ip-172-31-85-145.ec2.internal
+    port: "{{ item }}"
+    state: started         # Port should be open
+    delay: 0               # No wait before first check (sec)
+    timeout: 3             # Stop checking after timeout (sec)
+  #ignore_errors: yes
+  with_items:
+    - 80
+    - 22
+    - 8080
+    
