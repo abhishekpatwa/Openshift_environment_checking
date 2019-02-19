@@ -1,0 +1,45 @@
+---
+
+# tasks file for Version-check
+
+- name: Check Version
+  shell: '"{{item}}" --version'
+  with_items:
+        - "{{component_name}}"
+  register: component_version
+
+- name: Check Python Version
+  debug:
+    msg: "Python Version is same as your requirment"
+  when:
+      - component_version.results[0].item  == "{{component_name[0]}}"
+      - component_version.results[0].stderr == "{{python_version}}"
+
+
+- name: Check Docker Version
+  debug:
+    msg: "Docker Version is same as your requirment"
+  when:
+      - component_version.results[1].item  == "{{component_name[1]}}"
+      - component_version.results[1].stdout == "{{docker_version}}"
+
+- name: Check Ansible Version
+  debug:
+    msg: "Ansible Version is same as your requirment"
+  when:
+      - component_version.results[2].item  == "{{component_name[2]}}"
+      - component_version.results[2].stdout.split('\n')[0] == "{{ansible_version}}"
+
+
+- debug:
+    msg: "component_name: {{component_version.results[0].item}} \
+			 component_version: {{component_version.results[0].stderr}}"
+
+- debug:
+    msg: "component_name: {{component_version.results[1].item}} \ sepreator
+                         component_version: {{component_version.results[1].stdout}}"
+
+- debug:
+    msg: "component_name: {{component_version.results[2].item}} \
+                         component_version: {{component_version.results[2].stdout.split('\n')[0]}}"
+

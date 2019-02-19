@@ -1,0 +1,11 @@
+---
+# vars file for Version-check
+
+component_name: ["python","docker","ansible"]
+
+
+
+#component_version
+python_version: Python 2.7.5
+docker_version: Docker version 1.13.1, build 07f3374/1.13.1
+ansible_version: ansible 2.7.7
