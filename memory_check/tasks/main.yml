@@ -1,0 +1,38 @@
+---
+# tasks file for memory_check
+
+
+- name: Available ram size
+  command: free -m
+  register: result
+
+
+- debug:
+   msg: "Free Ram Space: {{result.stdout_lines[:2][1].split(' ')[31]}}  and Total Ram Size: {{result.stdout_lines[:2][1].split(' ')[12]}} "
+
+
+
+
+- name: Available HardDisk Space
+  command: df -H
+  register: result
+  
+
+- debug:
+    msg: "{{result.stdout_lines}}"
+
+
+
+#- name: Virtual Cpus
+#  command: cat /proc/cpuinfo | grep processor | wc -l
+#  register: output
+
+#- debug:
+#    msg: "{{output}}"
+
+- name: Number of virtual CPU's processor
+  shell: "grep processor /proc/cpuinfo"
+  register: grep_output
+
+- debug:
+    var: grep_output.stdout_lines
