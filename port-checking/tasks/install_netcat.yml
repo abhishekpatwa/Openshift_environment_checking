@@ -4,19 +4,22 @@
 #   state: latest
 
 
-#- name: Check all port numbers are accessible from current host
-#  wait_for:
-#    port: "{{ item }}"
-#    state: started         # Port should be open
-#    delay: 0               # No wait before first check (sec)
-#    timeout: 3             # Stop checking after timeout (sec)
-#  ignore_errors: yes
-#  with_items:
-#    - 22
-#    - 443
-#    - 80
-#    - 65532
+- name: Check all port numbers are accessible from current host
+  wait_for:
+    port: "{{ item }}"
+    state: started         # Port should be open
+    delay: 0               # No wait before first check (sec)
+    timeout: 3             # Stop checking after timeout (sec)
+  register: ping
+  ignore_errors: yes
+  with_items:
+    - 135
+    - 136
+    - 137
+    - 65532
 
+- debug:
+    msg: "{{ping}}"
 
 #- name: Telnet Command
 #  command: nc -vnz -w 1 172.31.85.246 "{{item}}"
@@ -28,9 +31,9 @@
 #    - 65532
   
 
-- name: listen
-  command: nc "{{groups['check_node']}}" 222
-  register: result
+#- name: listen
+#  command: nc "{{groups['check_node']}}" 222
+#  register: result
 
-- debug:
-     msg: "{{result}}"
+#- debug:
+#     msg: "{{result}}"

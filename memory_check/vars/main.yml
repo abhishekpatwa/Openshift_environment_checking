@@ -1,2 +1,7 @@
 ---
 # vars file for memory_check
+
+#component_version
+ram_needed: 690
+virtual_processor: 4
+hdd_space_needed: 3

@@ -1,0 +1,21 @@
+---
+
+# Role Version-check that check Version of python,docker,ansible
+# Role memory_check that Check Size of Ram and harddisk
+# Role port-checking checking the port wheather its connecting or not
+
+
+ - name: pre-request
+   hosts: check_node
+   become: yes
+   roles:
+#     - Version-check
+     - port-checking
+#     - memory_check
+
+  
+ - hosts: check_node
+   become: yes
+   tasks:
+    - include: roles/port-checking/tasks/install_netcat.yml
+

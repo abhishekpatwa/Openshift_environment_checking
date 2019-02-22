@@ -5,21 +5,59 @@
 - name: Available ram size
   command: free -m
   register: result
-
+  
+- name:  set_fact for Ram space
+  set_fact:
+     ram_flag= true    
+  when:
+    - result.stdout_lines[:2][1].split(' ')[31] >= "ram_needed"
 
 - debug:
-   msg: "Free Ram Space: {{result.stdout_lines[:2][1].split(' ')[31]}}  and Total Ram Size: {{result.stdout_lines[:2][1].split(' ')[12]}} "
+    msg: "Free Ram is not according to requirement. Require_Ram is {{ram_needed}} and The amount of free space in ram is {{result.stdout_lines[:2][1].split(' ')[31]}}"
+  when:
+    - "{{ram_flag is not defined}}"
+
+- debug:
+   msg: "Free Ram Space is according to requirement: {{result.stdout_lines[:2][1].split(' ')[31]}}  and Total Ram Size: {{result.stdout_lines[:2][1].split(' ')[12]}} "
+  when:
+    - "{{ram_flag is defined}}"
 
 
 
 
 - name: Available HardDisk Space
-  command: df -H
-  register: result
-  
+  command: df -h
+  register: hard_disk
+
+
+- name: Set_fact for HardDisk Space
+  set_fact:
+      hdd_flag: true
+  when:
+    - hard_disk.stdout_lines[1].split(' ')[11].split('G')[0].split('.')[0]  <= "{{hdd_space_needed}}"
+
 
 - debug:
-    msg: "{{result.stdout_lines}}"
+    msg: "Hard disk space is not enough. Required free space is {{hdd_space_needed}} "
+  when:
+    - "{{hdd_flag is not defined}}"
+
+- debug:
+    msg: "{{hdd_space_needed}}Hard disk space is according to requirement. Available Hard Disk space {{hard_disk.stdout_lines[1].split(' ')[11]}} "
+  when:
+    - "{{hdd_flag is defined}}"
+
+- debug:
+    msg: "{{hard_disk.stdout_lines[1].split(' ')[7].split('G')[0]}} and {{hard_disk.stdout_lines[1].split(' ')[11].split('G')[0].split('.')[0]}}"
+
+
+- name: set_fact for hard disk space
+  set_fact:
+    disk_flag: true
+  when:
+    - 
+  
+
 
 
 
@@ -34,5 +72,22 @@
   shell: "grep processor /proc/cpuinfo"
   register: grep_output
 
+- name: set_fact for vCPUS
+  set_fact:
+     vCPUs_flag: true
+  when:
+    - grep_output.stdout_lines[0].split(' ')[1] >= "{{virtual_processor}}"
+
 - debug:
-    var: grep_output.stdout_lines
+    msg: "no of vCPUS is not according to requirement. VCPus in this pc {{grep_output.stdout_lines[0].split(' ')[1]}} and Required vCpus {{virtual_processor}}"
+  when:
+   - "{{vCPUs_flag is not defined}}"
+
+- debug:
+    msg: "no of vCPUS is not according to requirement. VCPus in this pc {{grep_output.stdout_lines[0].split(' ')[1]}}"
+  when:
+   - "{{vCPUs_flag is  defined}}"
+
+
+
+

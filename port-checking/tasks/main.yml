@@ -3,21 +3,43 @@
 
 #- name: Check all port numbers are accessible from current host
 #  hosts: check_node
-#  wait_for:
+#   wait_for:
 #    port: "{{ item }}"
 #    state: started         # Port should be open
 #    delay: 0               # No wait before first check (sec)
 #    timeout: 3             # Stop checking after timeout (sec)
 #  ignore_errors: yes
 #  with_items:
-#    - 80
-#    - 22
-#    - 65532
+#    - 115
+#    - 116
+#    - 117
 
-- name: port listen
-  command: nc -lvp 222 &
-  register: resultlisten
+#- name: port listen
+#  command: nohup nc -lvp 222 &
+#  register: resultlisten
 #  async: 10
 #  poll: 0
+
+- name: Transfer and execute a script.
+  copy: src=nc_script.sh  dest=/var  mode=0777
+
+- name: Execute the script
+  command: sh /var/nc_script.sh
+  register: output1
+
+- debug:
+    msg: "{{output1}}"
+
+
+#- name: Transfer and execute a script.
+#  copy: src=nc_ping.sh  dest=/var  mode=0777
+
+#- name: Execute the script
+#  command: sh /var/nc_ping.sh
+#  register: output
+
+#- debug:
+#    msg: "{{output}}"
+
 
 
