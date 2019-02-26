@@ -1,0 +1,16 @@
+---
+# tasks file for practice
+
+- name: printing host variable
+  debug:
+#    msg: "{{ groups['check_node'] }}"
+
+
+- name: Printing host variable
+  debug:
+#    msg: "{{ group_vars[check_node].custom_var }}"
+
+- name:
+  debug:
+    msg: "{{a}}"
+

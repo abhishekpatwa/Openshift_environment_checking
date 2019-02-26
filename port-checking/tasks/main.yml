@@ -24,7 +24,7 @@
   copy: src=nc_script.sh  dest=/var  mode=0777
 
 - name: Execute the script
-  command: sh /var/nc_script.sh
+  command: sh /var/nc_script.sh "{{protocol}}" "{{port}}"
   register: output1
 
 - debug:
