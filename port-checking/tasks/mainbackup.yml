@@ -8,13 +8,24 @@
   command: sh /var/nc_script.sh "{{item}}"
   with_items:
      - "{{master_listening_ports}}"
+  
   register: output1
 
 - debug:
     msg: "{{output1}}"
 
-#- name: Access Listen Port
-#  command: nc 172.31.85.145 "{{item}}"
-#  register: result
+#- name: Check all port numbers are accessible from current host
+#  hosts: localhost
+#  wait_for:
+#    port: "{{ item }}"
+#    state: started         # Port should be open
+#    delay: 0               # No wait before first check (sec)
+#    timeout: 3             # Stop checking after timeout (sec)
+#  register: ping
+#  ignore_errors: yes
 #  with_items:
 #     - "{{master_listening_ports}}"
+
+#- debug:
+#    msg: "{{ping}}"
+

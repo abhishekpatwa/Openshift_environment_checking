@@ -1,4 +1,5 @@
 ---
 # vars file for port-checking
-protocol: "{{a}}"
-port: "{{b}}"
+master_listening_ports: [4789,10250,53,53,8053,8053,443,8443,24224,4789]
+
+#compute_listening__ports: [4789,10250,53,53,8053,8053,443,8443,24224,4789]

@@ -4,22 +4,19 @@
 #   state: latest
 
 
-- name: Check all port numbers are accessible from current host
-  wait_for:
-    port: "{{ item }}"
-    state: started         # Port should be open
-    delay: 0               # No wait before first check (sec)
-    timeout: 3             # Stop checking after timeout (sec)
-  register: ping
-  ignore_errors: yes
-  with_items:
-    - 135
-    - 136
-    - 137
-    - 65532
+#- name: Check all port numbers are accessible from current host
+#  wait_for:
+#    port: "{{ item }}"
+ #   state: started         # Port should be open
+  #  delay: 0               # No wait before first check (sec)
+#    timeout: 3             # Stop checking after timeout (sec)
+#  register: ping
+#  ignore_errors: yes
+#  with_items:
+#     - "{{master_listening_ports}}"
 
-- debug:
-    msg: "{{ping}}"
+#- debug:
+#    msg: "{{ping}}"
 
 #- name: Telnet Command
 #  command: nc -vnz -w 1 172.31.85.246 "{{item}}"
@@ -37,3 +34,41 @@
 
 #- debug:
 #     msg: "{{result}}"
+
+#- name: Check all port numbers are accessible from current host
+#  wait_for:
+#    port: "{{ item }}"
+#    state: started         # Port should be open
+#    delay: 0               # No wait before first check (sec)
+#    timeout: 3             # Stop checking after timeout (sec)
+#  register: ping
+#  ignore_errors: yes
+#  with_items:
+#    - 4789
+#     - 10250
+#     - 53
+#     - 53
+#     - 8053
+#     - 8053
+#     - 443
+#     - 8443
+#     - 24224
+#     - 4789
+
+- name: Access Listen Port
+  command: timeout --preserve-status 5 nc 172.31.85.145 "{{item}}"
+  register: result
+  with_items:
+     - 4789
+     - 10250
+     - 53
+     - 53
+     - 8053
+     - 8053
+     - 443
+     - 8443
+     - 24224
+     - 4789
+
+- debug:
+    msg: "{{result}}"
