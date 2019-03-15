@@ -1,0 +1,19 @@
+---
+# tasks file for app
+
+
+- name: ansible create directory example
+  file:
+    path: /tmp/check
+    state: directory
+
+
+- name: Transfer the script
+  copy: src=roles/app/files/server.py dest=/tmp/check mode=0777
+
+- name: Execute the server file
+  shell:  python /tmp/check/client.py
+  register: output
+
+- debug:
+    msg: "{{output}}"

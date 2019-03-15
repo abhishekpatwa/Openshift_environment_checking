@@ -1,0 +1,19 @@
+---
+# tasks file for app
+
+
+- name: ansible create directory example
+  file:
+    path: /tmp/check
+    state: directory
+
+
+- name: Transfer the script
+  copy: src=roles/app/files/cleanup.sh  dest=/tmp/check mode=0777
+
+- name: Execute cleanup shell script to clean environemnt
+  shell: sh /tmp/check/cleanup.sh
+  register: output1
+
+- debug:
+    msg: "{{output1}}"
